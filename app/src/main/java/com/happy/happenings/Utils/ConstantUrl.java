@@ -3,7 +3,7 @@ package com.happy.happenings.Utils;
 public class ConstantUrl {
 
   //  public static final String URL = "https://happyhappeningapp.000webhostapp.com/HappyHappenings/";
-    public static final String URL = "http://192.168.0.107/HappyHappenings/";
+    public static final String URL = "http://192.168.1.9/HappyHappenings/";
     public static final String PREF = "pref";
     public static final String ID = "id";
     public static final String TYPE = "type";
