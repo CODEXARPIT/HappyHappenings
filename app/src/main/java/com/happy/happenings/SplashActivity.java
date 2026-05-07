@@ -33,11 +33,12 @@ public class SplashActivity extends AppCompatActivity {
 
     //ImageView imageView;
     SharedPreferences sp;
-    String[] appPermission = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
+    String[] appPermission = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA, Manifest.permission.CALL_PHONE};
     private static final int PERMISSION_REQUEST_CODE = 1240;
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
-    public static String[] appPermission33 = {android.Manifest.permission.READ_MEDIA_IMAGES,Manifest.permission.CAMERA};
+    public static String[] appPermission33 = {android.Manifest.permission.READ_MEDIA_IMAGES, Manifest.permission.CAMERA, Manifest.permission.CALL_PHONE};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,15 +79,14 @@ public class SplashActivity extends AppCompatActivity {
 
     public boolean checkAndRequestPermission() {
         List<String> listPermission = new ArrayList<>();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            for (String perm : appPermission33) {
-                if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
-                    listPermission.add(perm);
-                }
+        String[] permissions = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) ? appPermission33 : appPermission;
+        for (String perm : permissions) {
+            if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
+                listPermission.add(perm);
             }
         }
         if (!listPermission.isEmpty()) {
-            ActivityCompat.requestPermissions(this, listPermission.toArray(new String[listPermission.size()]), PERMISSION_REQUEST_CODE);
+            ActivityCompat.requestPermissions(this, listPermission.toArray(new String[0]), PERMISSION_REQUEST_CODE);
             return false;
         }
         return true;
@@ -111,7 +111,7 @@ public class SplashActivity extends AppCompatActivity {
                     String permName = entry.getKey();
                     int permResult = entry.getValue();
                     if (ActivityCompat.shouldShowRequestPermissionRationale(this, permName)) {
-                        showDialogPermission("", "This App needs Read External Storage And Call permissions to work whithout and problems.",
+                        showDialogPermission("", "This App needs necessary permissions to work without any problems.",
                                 "Yes, Grant permissions", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -126,6 +126,7 @@ public class SplashActivity extends AppCompatActivity {
                                         finishAffinity();
                                     }
                                 }, false);
+                        break;
                     } else {
                         showDialogPermission("", "You have denied some permissions. Allow all permissions at [Setting] > [Permissions]",
                                 "Go to Settings", new DialogInterface.OnClickListener() {
